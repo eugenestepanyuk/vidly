@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 const { createLogger, format, transports } = require('winston');
+const config = require('config');
+
+console.log(`[${process.env.NODE_ENV.toUpperCase()}]: Loaded configuration`, config);
 
 const logger = createLogger({
     format: format.combine(
@@ -10,7 +13,7 @@ const logger = createLogger({
   });
 
 module.exports = () => {
-    mongoose.connect('mongodb://localhost/vidly-cinema', { useNewUrlParser: true, useUnifiedTopology: true })
+    mongoose.connect(config.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
         .then(() => logger.log('info', 'Connected to MongoDb..'));
     mongoose.set('useCreateIndex', true);
 }
